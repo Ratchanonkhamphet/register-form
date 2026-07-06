@@ -10,15 +10,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const isValid = validateForm();
 
         if (isValid) {
-            console.log('ข้อมูลครบถ้วน พร้อมแสดง Popup (Feature ถัดไป)');
-            // จะเพิ่มโค้ดแสดง Popup ใน Feature: popup-success
+            showSuccessPopup();
         }
     });
 
     function validateForm() {
         let isValid = true;
 
-        // เคลียร์ error message เก่าทุกครั้งก่อนเช็คใหม่
         clearErrors();
 
         const firstName = document.getElementById('firstName').value.trim();
@@ -59,6 +57,11 @@ document.addEventListener('DOMContentLoaded', function () {
         errorMessages.forEach(function (element) {
             element.textContent = '';
         });
+    }
+
+    function showSuccessPopup() {
+        alert('ลงทะเบียนสำเร็จ');
+        form.reset();
     }
 
 });
