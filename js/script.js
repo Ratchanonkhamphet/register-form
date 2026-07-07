@@ -31,12 +31,16 @@ document.addEventListener('DOMContentLoaded', function () {
             phone: /^0\d{9}$/,
             email: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
         };
+
         // ===== ชื่อ =====
         if (firstName === '') {
             showError('firstNameError', 'กรุณากรอกชื่อ');
             isValid = false;
-        } else if (!thaiRegex.test(firstName)) {
+        } else if (!regex.thaiFullName.test(firstName)) {
             showError('firstNameError', 'ชื่อใช้ได้เฉพาะภาษาไทย');
+            isValid = false;
+        } else if (/\s{2,}/.test(firstName)) {
+            showError('firstNameError', 'ชื่อไม่ควรมีช่องว่างติดกันหลายช่อง');
             isValid = false;
         }
 
@@ -44,8 +48,11 @@ document.addEventListener('DOMContentLoaded', function () {
         if (lastName === '') {
             showError('lastNameError', 'กรุณากรอกนามสกุล');
             isValid = false;
-        } else if (!thaiRegex.test(lastName)) {
+        } else if (!regex.thaiFullName.test(lastName)) {
             showError('lastNameError', 'นามสกุลใช้ได้เฉพาะภาษาไทย');
+            isValid = false;
+        } else if (/\s{2,}/.test(lastName)) {
+            showError('lastNameError', 'นามสกุลไม่ควรมีช่องว่างติดกันหลายช่อง');
             isValid = false;
         }
 
@@ -53,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (phone === '') {
             showError('phoneError', 'กรุณากรอกเบอร์โทรศัพท์');
             isValid = false;
-        } else if (!phoneRegex.test(phone)) {
+        } else if (!regex.phone.test(phone)) {
             showError('phoneError', 'เบอร์โทรต้องเป็นตัวเลข 10 หลัก และขึ้นต้นด้วย 0');
             isValid = false;
         }
@@ -62,7 +69,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (email === '') {
             showError('emailError', 'กรุณากรอก Email');
             isValid = false;
-        } else if (!emailRegex.test(email)) {
+        } else if (/\s/.test(email)) {
+            showError('emailError', 'Email ต้องไม่มีช่องว่าง');
+            isValid = false;
+        } else if (!regex.email.test(email)) {
             showError('emailError', 'รูปแบบ Email ไม่ถูกต้อง');
             isValid = false;
         }
