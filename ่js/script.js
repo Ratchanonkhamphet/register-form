@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ดักจับ Event ตอนกด Submit
     form.addEventListener('submit', function (event) {
-        event.preventDefault(); // ป้องกันไม่ให้หน้าเว็บ Refresh (พฤติกรรมปกติของ form)
+        event.preventDefault();
 
         const isValid = validateForm();
 
@@ -24,23 +24,44 @@ document.addEventListener('DOMContentLoaded', function () {
         const phone = document.getElementById('phone').value.trim();
         const email = document.getElementById('email').value.trim();
 
+        // Regular Expressions
+        const thaiRegex = /^[ก-๙\s]+$/;
+        const phoneRegex = /^0\d{9}$/;
+        const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+        // ===== ชื่อ =====
         if (firstName === '') {
             showError('firstNameError', 'กรุณากรอกชื่อ');
             isValid = false;
+        } else if (!thaiRegex.test(firstName)) {
+            showError('firstNameError', 'ชื่อใช้ได้เฉพาะภาษาไทย');
+            isValid = false;
         }
 
+        // ===== นามสกุล =====
         if (lastName === '') {
             showError('lastNameError', 'กรุณากรอกนามสกุล');
             isValid = false;
-        }
-
-        if (phone === '') {
-            showError('phoneError', 'กรุณากรอกเบอร์โทรศัพท์');
+        } else if (!thaiRegex.test(lastName)) {
+            showError('lastNameError', 'นามสกุลใช้ได้เฉพาะภาษาไทย');
             isValid = false;
         }
 
+        // ===== เบอร์โทร =====
+        if (phone === '') {
+            showError('phoneError', 'กรุณากรอกเบอร์โทรศัพท์');
+            isValid = false;
+        } else if (!phoneRegex.test(phone)) {
+            showError('phoneError', 'เบอร์โทรต้องเป็นตัวเลข 10 หลัก และขึ้นต้นด้วย 0');
+            isValid = false;
+        }
+
+        // ===== Email =====
         if (email === '') {
             showError('emailError', 'กรุณากรอก Email');
+            isValid = false;
+        } else if (!emailRegex.test(email)) {
+            showError('emailError', 'รูปแบบ Email ไม่ถูกต้อง');
             isValid = false;
         }
 
@@ -54,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function clearErrors() {
         const errorMessages = document.querySelectorAll('.error-message');
+
         errorMessages.forEach(function (element) {
             element.textContent = '';
         });
