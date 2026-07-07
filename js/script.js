@@ -25,10 +25,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const email = document.getElementById('email').value.trim();
 
         // Regular Expressions
-        const thaiRegex = /^[ก-๙\s]+$/;
-        const phoneRegex = /^0\d{9}$/;
-        const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-
+        const regex = {
+            thaiName: /^[ก-๙]+$/,
+            thaiFullName: /^[ก-๙\s]+$/,
+            phone: /^0\d{9}$/,
+            email: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
+        };
         // ===== ชื่อ =====
         if (firstName === '') {
             showError('firstNameError', 'กรุณากรอกชื่อ');
