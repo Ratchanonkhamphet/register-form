@@ -1,4 +1,59 @@
 import { useState } from 'react';
+import Home from './Home';
+import Footer from './components/Footer';
+
+const translations = {
+  th: {
+    formTitle: 'ลงทะเบียน',
+    submit: 'ส่ง',
+    nameLabel: 'ชื่อ',
+    lastNameLabel: 'นามสกุล',
+    phoneLabel: 'เบอร์โทรศัพท์',
+    emailLabel: 'Email',
+    ageLabel: 'อายุ',
+    errors: {
+      firstNameRequired: 'กรุณากรอกชื่อ',
+      firstNameThai: 'ชื่อใช้ได้เฉพาะภาษาไทย',
+      firstNameSpace: 'ชื่อไม่ควรมีช่องว่างติดกันหลายช่อง',
+      lastNameRequired: 'กรุณากรอกนามสกุล',
+      lastNameThai: 'นามสกุลใช้ได้เฉพาะภาษาไทย',
+      lastNameSpace: 'นามสกุลไม่ควรมีช่องว่างติดกันหลายช่อง',
+      phoneRequired: 'กรุณากรอกเบอร์โทรศัพท์',
+      phoneInvalid: 'เบอร์โทรต้องเป็นตัวเลข 10 หลัก และขึ้นต้นด้วย 0',
+      emailRequired: 'กรุณากรอก Email',
+      emailNoSpace: 'Email ต้องไม่มีช่องว่าง',
+      emailInvalid: 'รูปแบบ Email ไม่ถูกต้อง',
+      ageRequired: 'กรุณากรอกอายุ',
+      ageInvalid: 'อายุต้องเป็นตัวเลขที่มากกว่า 0',
+    },
+    languageButton: 'EN',
+  },
+  en: {
+    formTitle: 'Register',
+    submit: 'Submit',
+    nameLabel: 'First Name',
+    lastNameLabel: 'Last Name',
+    phoneLabel: 'Phone',
+    emailLabel: 'Email',
+    ageLabel: 'Age',
+    errors: {
+      firstNameRequired: 'Please enter first name',
+      firstNameThai: 'First name must be in Thai',
+      firstNameSpace: 'First name cannot contain consecutive spaces',
+      lastNameRequired: 'Please enter last name',
+      lastNameThai: 'Last name must be in Thai',
+      lastNameSpace: 'Last name cannot contain consecutive spaces',
+      phoneRequired: 'Please enter phone number',
+      phoneInvalid: 'Phone must be 10 digits and start with 0',
+      emailRequired: 'Please enter Email',
+      emailNoSpace: 'Email must not contain spaces',
+      emailInvalid: 'Invalid Email format',
+      ageRequired: 'Please enter age',
+      ageInvalid: 'Age must be a number greater than 0',
+    },
+    languageButton: 'TH',
+  },
+};
 
 function App() {
   const [formData, setFormData] = useState({
@@ -10,6 +65,15 @@ function App() {
   });
 
   const [errors, setErrors] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [page, setPage] = useState('home');
+  const [language, setLanguage] = useState('th');
+
+  const t = translations[language];
+
+  const toggleLanguage = () => {
+    setLanguage((prev) => (prev === 'th' ? 'en' : 'th'));
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,39 +90,39 @@ function App() {
     };
 
     if (!formData.firstName.trim()) {
-      newErrors.firstName = 'กรุณากรอกชื่อ';
+      newErrors.firstName = t.errors.firstNameRequired;
     } else if (!regex.thaiFullName.test(formData.firstName.trim())) {
-      newErrors.firstName = 'ชื่อใช้ได้เฉพาะภาษาไทย';
+      newErrors.firstName = t.errors.firstNameThai;
     } else if (/\s{2,}/.test(formData.firstName.trim())) {
-      newErrors.firstName = 'ชื่อไม่ควรมีช่องว่างติดกันหลายช่อง';
+      newErrors.firstName = t.errors.firstNameSpace;
     }
 
     if (!formData.lastName.trim()) {
-      newErrors.lastName = 'กรุณากรอกนามสกุล';
+      newErrors.lastName = t.errors.lastNameRequired;
     } else if (!regex.thaiFullName.test(formData.lastName.trim())) {
-      newErrors.lastName = 'นามสกุลใช้ได้เฉพาะภาษาไทย';
+      newErrors.lastName = t.errors.lastNameThai;
     } else if (/\s{2,}/.test(formData.lastName.trim())) {
-      newErrors.lastName = 'นามสกุลไม่ควรมีช่องว่างติดกันหลายช่อง';
+      newErrors.lastName = t.errors.lastNameSpace;
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = 'กรุณากรอกเบอร์โทรศัพท์';
+      newErrors.phone = t.errors.phoneRequired;
     } else if (!regex.phone.test(formData.phone.trim())) {
-      newErrors.phone = 'เบอร์โทรต้องเป็นตัวเลข 10 หลัก และขึ้นต้นด้วย 0';
+      newErrors.phone = t.errors.phoneInvalid;
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'กรุณากรอก Email';
+      newErrors.email = t.errors.emailRequired;
     } else if (/\s/.test(formData.email.trim())) {
-      newErrors.email = 'Email ต้องไม่มีช่องว่าง';
+      newErrors.email = t.errors.emailNoSpace;
     } else if (!regex.email.test(formData.email.trim())) {
-      newErrors.email = 'รูปแบบ Email ไม่ถูกต้อง';
-    } 
+      newErrors.email = t.errors.emailInvalid;
+    }
 
     if (!formData.age.trim()) {
-      newErrors.age = 'กรุณากรอกอายุ';
-    } else if (isNaN(formData.age) || formData.age < 0) {
-      newErrors.age = 'อายุต้องเป็นตัวเลขที่มากกว่า 0';
+      newErrors.age = t.errors.ageRequired;
+    } else if (Number.isNaN(Number(formData.age)) || Number(formData.age) <= 0) {
+      newErrors.age = t.errors.ageInvalid;
     }
 
     setErrors(newErrors);
@@ -68,20 +132,30 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      alert('ลงทะเบียนสำเร็จ');
+      setIsLoggedIn(true);
       setFormData({ firstName: '', lastName: '', phone: '', email: '', age: '' });
       setErrors({});
     }
   };
 
-  return (
-    <main className="container">
-      <div className="card">
-        <h1 className="card-title">ลงทะเบียน</h1>
+  if (isLoggedIn) {
+    return <Home page={page} setPage={setPage} language={language} toggleLanguage={toggleLanguage} />;
+  }
 
-        <form onSubmit={handleSubmit} noValidate>
+  return (
+    <div className="page-shell">
+      <main className="container">
+        <div className="card">
+          <div className="card-header">
+            <h1 className="card-title">{t.formTitle}</h1>
+            <button type="button" className="lang-toggle" onClick={toggleLanguage}>
+              {t.languageButton}
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} noValidate>
           <div className="form-group">
-            <label htmlFor="firstName">ชื่อ</label>
+            <label htmlFor="firstName">{t.nameLabel}</label>
             <input
               id="firstName"
               name="firstName"
@@ -93,7 +167,7 @@ function App() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="lastName">นามสกุล</label>
+            <label htmlFor="lastName">{t.lastNameLabel}</label>
             <input
               id="lastName"
               name="lastName"
@@ -105,7 +179,7 @@ function App() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="phone">เบอร์โทรศัพท์</label>
+            <label htmlFor="phone">{t.phoneLabel}</label>
             <input
               id="phone"
               name="phone"
@@ -117,7 +191,7 @@ function App() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t.emailLabel}</label>
             <input
               id="email"
               name="email"
@@ -129,7 +203,7 @@ function App() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="age">อายุ</label>
+            <label htmlFor="age">{t.ageLabel}</label>
             <input
               id="age"
               name="age"
@@ -140,12 +214,14 @@ function App() {
             <span className="error-message">{errors.age || ''}</span>
           </div>
 
-          <button type="submit" className="btn-submit">
-            Submit
-          </button>
-        </form>
-      </div>
-    </main>
+            <button type="submit" className="btn-submit">
+              {t.submit}
+            </button>
+          </form>
+        </div>
+      </main>
+      <Footer language={language} />
+    </div>
   );
 }
 
