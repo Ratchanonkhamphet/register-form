@@ -14,7 +14,7 @@ function Home({ page, setPage, language, toggleLanguage }) {
           <p>
             {language === 'en'
               ? 'This is the main page after logging in. You can browse and use the website.'
-              : 'นี่คือหน้าหลักหลังจากเข้าสู่ระบบ คุณสามารถทำการเรียกดูและใช้งานเว็บไซต์ได้'}
+              : 'นี่คือหน้าหลักหลังจากเข้าสู่ระบบ คุณสามารถทำการเรียกดูและใช้งานเว็บไซต์ได้เลย'}
           </p>
         </main>
       )}
