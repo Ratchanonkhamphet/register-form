@@ -10,7 +10,6 @@ const translations = {
     lastNameLabel: 'นามสกุล',
     phoneLabel: 'เบอร์โทรศัพท์',
     emailLabel: 'Email',
-    ageLabel: 'อายุ',
     errors: {
       firstNameRequired: 'กรุณากรอกชื่อ',
       firstNameThai: 'ชื่อใช้ได้เฉพาะภาษาไทย',
@@ -23,8 +22,6 @@ const translations = {
       emailRequired: 'กรุณากรอก Email',
       emailNoSpace: 'Email ต้องไม่มีช่องว่าง',
       emailInvalid: 'รูปแบบ Email ไม่ถูกต้อง',
-      ageRequired: 'กรุณากรอกอายุ',
-      ageInvalid: 'อายุต้องเป็นตัวเลขที่มากกว่า 0',
     },
     languageButton: 'EN',
   },
@@ -35,7 +32,6 @@ const translations = {
     lastNameLabel: 'Last Name',
     phoneLabel: 'Phone',
     emailLabel: 'Email',
-    ageLabel: 'Age',
     errors: {
       firstNameRequired: 'Please enter first name',
       firstNameThai: 'First name must be in Thai',
@@ -48,8 +44,6 @@ const translations = {
       emailRequired: 'Please enter Email',
       emailNoSpace: 'Email must not contain spaces',
       emailInvalid: 'Invalid Email format',
-      ageRequired: 'Please enter age',
-      ageInvalid: 'Age must be a number greater than 0',
     },
     languageButton: 'TH',
   },
@@ -61,7 +55,6 @@ function App() {
     lastName: '',
     phone: '',
     email: '',
-    age: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -86,7 +79,6 @@ function App() {
       thaiFullName: /^[ก-๙\s]+$/,
       phone: /^0\d{9}$/,
       email: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-      age: /^\d+$/,
     };
 
     if (!formData.firstName.trim()) {
@@ -119,11 +111,6 @@ function App() {
       newErrors.email = t.errors.emailInvalid;
     }
 
-    if (!formData.age.trim()) {
-      newErrors.age = t.errors.ageRequired;
-    } else if (Number.isNaN(Number(formData.age)) || Number(formData.age) <= 0) {
-      newErrors.age = t.errors.ageInvalid;
-    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -133,7 +120,7 @@ function App() {
     e.preventDefault();
     if (validateForm()) {
       setIsLoggedIn(true);
-      setFormData({ firstName: '', lastName: '', phone: '', email: '', age: '' });
+      setFormData({ firstName: '', lastName: '', phone: '', email: '' });
       setErrors({});
     }
   };
@@ -202,17 +189,6 @@ function App() {
             <span className="error-message">{errors.email || ''}</span>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="age">{t.ageLabel}</label>
-            <input
-              id="age"
-              name="age"
-              type="number"
-              value={formData.age}
-              onChange={handleChange}
-            />
-            <span className="error-message">{errors.age || ''}</span>
-          </div>
 
             <button type="submit" className="btn-submit">
               {t.submit}
