@@ -6,6 +6,7 @@ function App() {
     lastName: '',
     phone: '',
     email: '',
+    age: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -51,6 +52,12 @@ function App() {
       newErrors.email = 'Email ต้องไม่มีช่องว่าง';
     } else if (!regex.email.test(formData.email.trim())) {
       newErrors.email = 'รูปแบบ Email ไม่ถูกต้อง';
+    } 
+
+    if (!formData.age.trim()) {
+      newErrors.age = 'กรุณากรอกอายุ';
+    } else if (isNaN(formData.age) || formData.age < 0) {
+      newErrors.age = 'อายุต้องเป็นตัวเลขที่มากกว่า 0';
     }
 
     setErrors(newErrors);
@@ -61,7 +68,7 @@ function App() {
     e.preventDefault();
     if (validateForm()) {
       alert('ลงทะเบียนสำเร็จ');
-      setFormData({ firstName: '', lastName: '', phone: '', email: '' });
+      setFormData({ firstName: '', lastName: '', phone: '', email: '', age: '' });
       setErrors({});
     }
   };
@@ -118,6 +125,18 @@ function App() {
               onChange={handleChange}
             />
             <span className="error-message">{errors.email || ''}</span>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="age">อายุ</label>
+            <input
+              id="age"
+              name="age"
+              type="number"
+              value={formData.age}
+              onChange={handleChange}
+            />
+            <span className="error-message">{errors.age || ''}</span>
           </div>
 
           <button type="submit" className="btn-submit">
