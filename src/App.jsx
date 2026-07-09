@@ -22,6 +22,7 @@ function App() {
       thaiFullName: /^[ก-๙\s]+$/,
       phone: /^0\d{9}$/,
       email: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
+      age: /^\d+$/,
     };
 
     if (!formData.firstName.trim()) {
